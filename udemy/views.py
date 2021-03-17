@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from bs4 import BeautifulSoup
 import requests
-
+import json
 
 def scrape_category(name):
     base_url = 'https://udemycoupon.learnviral.com/coupon-category/' + name + '/'
@@ -16,10 +16,10 @@ def scrape_category(name):
         course_link = item.find('a', {'class': 'coupon-code-link btn promotion'})['href']
         success_rate = item.find('span', {'class': 'percent'}).text
         courses.append({
-            'heading': heading,
-            'image': image.replace('240x135', '750x422'),
-            'courselink': course_link,
-            'successrate' : success_rate,
+            "heading": heading,
+            "image": image.replace('240x135', '750x422'),
+            "courselink": course_link,
+            "successrate" : success_rate,
         })
 
     return courses
@@ -27,14 +27,13 @@ def scrape_category(name):
 
 def index(req):
     result = {}
-    for category in ('development', 'it-software', 'business', 'office-productivity', 'personal-development', 'design', 'marketing','language', 'test-prep'):
+    for category in ("development", "it-software", "business", "office-productivity", "personal-development"," design", "marketing","language", "test-prep"):
         result[category] = scrape_category(category)
 
-    data = [result]  # or print([result])
+    data = json.dumps([result])  # or print([result])
     return render(req, 'index.html', {'courses': data})
 def all(req):
-    for category in (
-    'development', 'it-software', 'business', 'office-productivity', 'personal-development', 'design', 'marketing','language', 'test-prep'):
-        data = scrape_category(category)
+    for category in ("development", "it-software", "business", "office-productivity", "personal-development"," design", "marketing","language", "test-prep"):
+        data = json.dumps(scrape_category(category))
     return render(req, 'index.html', {'courses': data})
 
