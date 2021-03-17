@@ -30,7 +30,7 @@ def index(req):
     for category in ("development", "it-software", "business", "office-productivity", "personal-development"," design", "marketing","language", "test-prep"):
         result[category] = scrape_category(category)
 
-    data = json.dumps([result])  # or print([result])
+    data = json.dumps([result])  # oArr print([result])
     return HttpResponse(data.strip('"'), content_type="application/json")
 
 def all(req):
