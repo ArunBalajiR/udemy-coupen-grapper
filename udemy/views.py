@@ -1,4 +1,4 @@
-
+from django.http import HttpResponse
 from django.shortcuts import render
 from bs4 import BeautifulSoup
 import requests
@@ -31,9 +31,10 @@ def index(req):
         result[category] = scrape_category(category)
 
     data = json.dumps([result])  # or print([result])
-    return render(req, 'index.html', {'courses': data})
+    return HttpResponse(data.strip('"'), content_type="application/json")
+
 def all(req):
     for category in ("development", "it-software", "business", "office-productivity", "personal-development"," design", "marketing","language", "test-prep"):
         data = json.dumps(scrape_category(category))
-    return render(req, 'index.html', {'courses': data})
+    return HttpResponse(data.strip('"'), content_type="application/json")
 
